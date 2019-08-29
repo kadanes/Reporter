@@ -9,19 +9,25 @@
 /* Begin PBXBuildFile section */
 		B213E784231770BC0064B224 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B213E783231770BC0064B224 /* AppDelegate.swift */; };
 		B213E786231770BC0064B224 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B213E785231770BC0064B224 /* ViewController.swift */; };
-		B213E789231770BC0064B224 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B213E787231770BC0064B224 /* Main.storyboard */; };
 		B213E78B231770BE0064B224 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B213E78A231770BE0064B224 /* Assets.xcassets */; };
 		B213E78E231770BE0064B224 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B213E78C231770BE0064B224 /* LaunchScreen.storyboard */; };
+		B213E796231771C00064B224 /* DashboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B213E795231771C00064B224 /* DashboardController.swift */; };
+		B213E799231777000064B224 /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = B213E798231777000064B224 /* data.json */; };
+		B213E79D2317771C0064B224 /* mobile-1.png in Resources */ = {isa = PBXBuildFile; fileRef = B213E79B2317771C0064B224 /* mobile-1.png */; };
+		B213E79E2317771C0064B224 /* mobile-2.png in Resources */ = {isa = PBXBuildFile; fileRef = B213E79C2317771C0064B224 /* mobile-2.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		B213E780231770BC0064B224 /* Reporter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reporter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B213E783231770BC0064B224 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B213E785231770BC0064B224 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		B213E788231770BC0064B224 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B213E78A231770BE0064B224 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B213E78D231770BE0064B224 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B213E78F231770BE0064B224 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B213E795231771C00064B224 /* DashboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardController.swift; sourceTree = "<group>"; };
+		B213E798231777000064B224 /* data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = data.json; sourceTree = "<group>"; };
+		B213E79B2317771C0064B224 /* mobile-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mobile-1.png"; sourceTree = "<group>"; };
+		B213E79C2317771C0064B224 /* mobile-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mobile-2.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,14 +60,33 @@
 		B213E782231770BC0064B224 /* Reporter */ = {
 			isa = PBXGroup;
 			children = (
+				B213E79A2317770E0064B224 /* Reference */,
+				B213E797231775EC0064B224 /* Constants */,
 				B213E783231770BC0064B224 /* AppDelegate.swift */,
+				B213E795231771C00064B224 /* DashboardController.swift */,
 				B213E785231770BC0064B224 /* ViewController.swift */,
-				B213E787231770BC0064B224 /* Main.storyboard */,
 				B213E78A231770BE0064B224 /* Assets.xcassets */,
 				B213E78C231770BE0064B224 /* LaunchScreen.storyboard */,
 				B213E78F231770BE0064B224 /* Info.plist */,
 			);
 			path = Reporter;
+			sourceTree = "<group>";
+		};
+		B213E797231775EC0064B224 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				B213E798231777000064B224 /* data.json */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		B213E79A2317770E0064B224 /* Reference */ = {
+			isa = PBXGroup;
+			children = (
+				B213E79B2317771C0064B224 /* mobile-1.png */,
+				B213E79C2317771C0064B224 /* mobile-2.png */,
+			);
+			path = Reference;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -122,9 +147,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B213E79E2317771C0064B224 /* mobile-2.png in Resources */,
 				B213E78E231770BE0064B224 /* LaunchScreen.storyboard in Resources */,
+				B213E79D2317771C0064B224 /* mobile-1.png in Resources */,
+				B213E799231777000064B224 /* data.json in Resources */,
 				B213E78B231770BE0064B224 /* Assets.xcassets in Resources */,
-				B213E789231770BC0064B224 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,6 +163,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B213E786231770BC0064B224 /* ViewController.swift in Sources */,
+				B213E796231771C00064B224 /* DashboardController.swift in Sources */,
 				B213E784231770BC0064B224 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -143,14 +171,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		B213E787231770BC0064B224 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B213E788231770BC0064B224 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		B213E78C231770BE0064B224 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -292,7 +312,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.parthtamane.Reporter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -310,7 +330,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.parthtamane.Reporter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
