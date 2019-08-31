@@ -13,8 +13,10 @@ import UIKit
  var reports: Reports? = nil
  var tags: [String] = []
  var filterOptionsView: UICollectionView!
+ var reportsView: UICollectionView!
  let filterOptionCellId = "FilterOptionsCell"
  var selectedTag = ""
+ var sortedReports: [String: [Report]] = [:]
  
  struct Report: Decodable {
     let date: String
@@ -38,23 +40,20 @@ import UIKit
         filterOptionsView.backgroundColor = .white
         self.view.addSubview(filterOptionsView)
         
+        reportsView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        reportsView.translatesAutoresizingMaskIntoConstraints = false
+        reportsView.backgroundColor = .blue
+        self.view.addSubview(reportsView)
 
-        if #available(iOS 11, *) {
-            let guide = view.safeAreaLayoutGuide
-            NSLayoutConstraint.activate([
-                filterOptionsView.topAnchor.constraint(equalToSystemSpacingBelow: guide.topAnchor, multiplier: 1.0),
-                guide.bottomAnchor.constraint(equalToSystemSpacingBelow: filterOptionsView.bottomAnchor, multiplier: 1.0), guide.leftAnchor.constraint(equalToSystemSpacingAfter: filterOptionsView.leftAnchor, multiplier: -1.0), guide.rightAnchor.constraint(equalToSystemSpacingAfter: filterOptionsView.rightAnchor, multiplier: 1.0), guide.heightAnchor.constraint(equalToConstant: 80)
-                ])
-            
-        } else {
-            //Untested Code. Need Devices to fix.
-            let standardSpacing: CGFloat = 8.0
-            NSLayoutConstraint.activate([
-                filterOptionsView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor, constant: standardSpacing),
-                bottomLayoutGuide.topAnchor.constraint(equalTo: filterOptionsView.bottomAnchor, constant: standardSpacing)
-                ])
-        }
+        filterOptionsView.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        filterOptionsView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8).isActive = true
+        filterOptionsView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 8).isActive = true
+        filterOptionsView.topAnchor.constraint(equalTo: view.topAnchor, constant: 28).isActive = true
         
+        reportsView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 1).isActive = true
+        reportsView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        reportsView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        reportsView.topAnchor.constraint(equalTo: filterOptionsView.bottomAnchor, constant: 1).isActive = true
     }
     
     
@@ -69,14 +68,25 @@ import UIKit
             layout.scrollDirection = .horizontal
         }
         filterOptionsView.showsHorizontalScrollIndicator = false
-    
+        
+        reportsView.delegate = self
+        reportsView.dataSource = self
+        reportsView.register(ReportCell.self, forCellWithReuseIdentifier: ReportCell.identifier)
+        
         guard let reports = reports else { return }
         
         for report in reports.reports {
             if !tags.contains(report.tag) {
                 tags.append(report.tag)
             }
+            
+            if let _ = sortedReports[report.tag] {
+                sortedReports[report.tag]?.append(report)
+            } else {
+                sortedReports[report.tag] = [report]
+            }
         }
+        
     }
     
     func readData() -> Reports {
@@ -119,6 +129,14 @@ import UIKit
         if collectionView == filterOptionsView {
             return tags.count
         }
+        if collectionView == reportsView {
+           
+            if selectedTag != "" {
+                return sortedReports[selectedTag]?.count ?? 0
+            }
+            
+            return reports?.reports.count ?? 0
+        }
         
         return 0
     }
@@ -129,6 +147,20 @@ import UIKit
                 optionsCell.configureCell(option: tags[indexPath.row], selected: selectedTag == tags[indexPath.row])
                 return optionsCell
             }
+        } else if collectionView == reportsView {
+            
+            if let reportCell = collectionView.dequeueReusableCell(withReuseIdentifier: ReportCell.identifier, for: indexPath) as? ReportCell {
+                
+                if selectedTag != "" {
+                    reportCell.configureCell(title: sortedReports[selectedTag]?[indexPath.row].title ??  "UNDEFINDED")
+                    return reportCell
+                } else {
+                    reportCell.configureCell(title: reports?.reports[indexPath.row].title ??  "UNDEFINDED")
+                    return reportCell
+                }
+                
+            }
+            
         }
         
         return UICollectionViewCell()
@@ -150,6 +182,7 @@ import UIKit
                     collectionView.reloadItems(at: [oldIndexPath,indexPath])
                 }
             }
+            reportsView.reloadData()
         }
     }
  }
@@ -164,9 +197,22 @@ import UIKit
             let size = (tags[indexPath.row] as NSString).size(withAttributes: nil)
             return CGSize(width: size.width * 1.7, height: 45)
         }
+        if collectionView == reportsView {
+            return CGSize(width: 180, height: 300)
 
+        }
         return CGSize(width: collectionView.bounds.width/2, height: 44)
-       
+
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        insetForSectionAt section: Int) -> UIEdgeInsets {
+        
+        if collectionView == reportsView {
+             return UIEdgeInsets(top: 10, left: 10, bottom: 0, right: 20)
+        }
+        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     
  }
