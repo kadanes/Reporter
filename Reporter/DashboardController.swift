@@ -9,7 +9,8 @@
 import Foundation
 import UIKit
  
- let error = "Error"
+ let errorLog = "Error"
+ let undefinedLog = "Undefined"
  var reports: Reports? = nil
  var tags: [String] = []
  var filterOptionsView: UICollectionView!
@@ -40,7 +41,9 @@ import UIKit
         filterOptionsView.backgroundColor = .white
         self.view.addSubview(filterOptionsView)
         
-        reportsView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        let reportsViewLayout = TopAlignedCollectionViewFlowLayout()
+        reportsViewLayout.estimatedItemSize = CGSize(width: 1.0, height: 1.0)
+        reportsView = UICollectionView(frame: .zero, collectionViewLayout: reportsViewLayout)
         reportsView.translatesAutoresizingMaskIntoConstraints = false
         reportsView.backgroundColor = .blue
         self.view.addSubview(reportsView)
@@ -92,7 +95,7 @@ import UIKit
     func readData() -> Reports {
         guard let filePath = Bundle.main.path(forResource: "data", ofType: "json") else {
             return
-                Reports(reports: [Report(date: Date().description, description: error, tag: error, thumbnail: error, title: error)])
+                Reports(reports: [Report(date: Date().description, description: errorLog, tag: errorLog, thumbnail: errorLog, title: errorLog)])
             
         }
         let fileUrl = URL(fileURLWithPath: filePath)
@@ -108,19 +111,8 @@ import UIKit
         }
         
         return  
-            Reports(reports: [Report(date: Date().description, description: error, tag: error, thumbnail: error, title: error)])
+            Reports(reports: [Report(date: Date().description, description: errorLog, tag: errorLog, thumbnail: errorLog, title: errorLog)])
     }
- }
- 
- extension Formatter {
-    static let iso8601: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.calendar = Calendar(identifier: .iso8601)
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
-        return formatter
-    }()
  }
  
  extension DashboardController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -133,9 +125,11 @@ import UIKit
            
             if selectedTag != "" {
                 return sortedReports[selectedTag]?.count ?? 0
+//                return 1
             }
             
             return reports?.reports.count ?? 0
+//            return 1
         }
         
         return 0
@@ -152,10 +146,12 @@ import UIKit
             if let reportCell = collectionView.dequeueReusableCell(withReuseIdentifier: ReportCell.identifier, for: indexPath) as? ReportCell {
                 
                 if selectedTag != "" {
-                    reportCell.configureCell(title: sortedReports[selectedTag]?[indexPath.row].title ??  "UNDEFINDED")
+                    let currentReport = sortedReports[selectedTag]?[indexPath.row]
+                    reportCell.configureCell(thumbnail: nil, date: currentReport?.date ?? undefinedLog, title: currentReport?.title ??  undefinedLog, description: currentReport?.description ?? undefinedLog)
                     return reportCell
                 } else {
-                    reportCell.configureCell(title: reports?.reports[indexPath.row].title ??  "UNDEFINDED")
+                    let currentReport = reports?.reports[indexPath.row]
+                    reportCell.configureCell(thumbnail: nil, date: currentReport?.date ?? undefinedLog, title: currentReport?.title ?? undefinedLog, description: currentReport?.description ?? undefinedLog)
                     return reportCell
                 }
                 
@@ -197,12 +193,8 @@ import UIKit
             let size = (tags[indexPath.row] as NSString).size(withAttributes: nil)
             return CGSize(width: size.width * 1.7, height: 45)
         }
-        if collectionView == reportsView {
-            return CGSize(width: 180, height: 300)
-
-        }
+        
         return CGSize(width: collectionView.bounds.width/2, height: 44)
-
     }
     
     func collectionView(_ collectionView: UICollectionView,
@@ -210,9 +202,49 @@ import UIKit
                         insetForSectionAt section: Int) -> UIEdgeInsets {
         
         if collectionView == reportsView {
-             return UIEdgeInsets(top: 10, left: 10, bottom: 0, right: 20)
+             return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         }
         return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     
+ }
+
+ //2
+ class TopAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        if let attrs = super.layoutAttributesForElements(in: rect) {
+            var baseline: CGFloat = -2
+            var sameLineElements = [UICollectionViewLayoutAttributes]()
+            for element in attrs {
+                if element.representedElementCategory == .cell {
+                    let frame = element.frame
+                    let centerY = frame.midY
+                    if abs(centerY - baseline) > 1 {
+                        baseline = centerY
+                        alignToTopForSameLineElements(sameLineElements: sameLineElements)
+                        sameLineElements.removeAll()
+                    }
+                    sameLineElements.append(element)
+                }
+            }
+            alignToTopForSameLineElements(sameLineElements: sameLineElements) // align one more time for the last line
+            return attrs
+        }
+        return nil
+    }
+    
+    private func alignToTopForSameLineElements(sameLineElements: [UICollectionViewLayoutAttributes]) {
+        if sameLineElements.count < 1 { return }
+        let sorted = sameLineElements.sorted { (obj1: UICollectionViewLayoutAttributes, obj2: UICollectionViewLayoutAttributes) -> Bool in
+            let height1 = obj1.frame.size.height
+            let height2 = obj2.frame.size.height
+            let delta = height1 - height2
+            return delta <= 0
+        }
+        if let tallest = sorted.last {
+            for obj in sameLineElements {
+                obj.frame = obj.frame.offsetBy(dx: 0, dy: tallest.frame.origin.y - obj.frame.origin.y)
+            }
+        }
+    }
  }

@@ -16,6 +16,7 @@
 		B213E79E2317771C0064B224 /* mobile-2.png in Resources */ = {isa = PBXBuildFile; fileRef = B213E79C2317771C0064B224 /* mobile-2.png */; };
 		B27467D0231877490008008D /* OptionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27467CF231877490008008D /* OptionsCell.swift */; };
 		B2915268231975460077C648 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2915267231975460077C648 /* String.swift */; };
+		B2D4418C231B0E8300A4FC92 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D4418B231B0E8300A4FC92 /* Formatter.swift */; };
 		B2FF9369231A09D300C330E8 /* ReportCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FF9368231A09D300C330E8 /* ReportCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +32,7 @@
 		B213E79C2317771C0064B224 /* mobile-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mobile-2.png"; sourceTree = "<group>"; };
 		B27467CF231877490008008D /* OptionsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsCell.swift; sourceTree = "<group>"; };
 		B2915267231975460077C648 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		B2D4418B231B0E8300A4FC92 /* Formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatter.swift; sourceTree = "<group>"; };
 		B2FF9368231A09D300C330E8 /* ReportCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -107,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				B2915267231975460077C648 /* String.swift */,
+				B2D4418B231B0E8300A4FC92 /* Formatter.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -207,6 +210,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B213E796231771C00064B224 /* DashboardController.swift in Sources */,
+				B2D4418C231B0E8300A4FC92 /* Formatter.swift in Sources */,
 				B213E784231770BC0064B224 /* AppDelegate.swift in Sources */,
 				B2915268231975460077C648 /* String.swift in Sources */,
 				B27467D0231877490008008D /* OptionsCell.swift in Sources */,
