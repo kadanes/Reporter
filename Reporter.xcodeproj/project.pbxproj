@@ -19,6 +19,7 @@
 		B2915268231975460077C648 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2915267231975460077C648 /* String.swift */; };
 		B2D4418C231B0E8300A4FC92 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D4418B231B0E8300A4FC92 /* Formatter.swift */; };
 		B2E2ABEA231B88CC00C79375 /* AlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2ABE9231B88CB00C79375 /* AlignedCollectionViewFlowLayout.swift */; };
+		B2F06943231C2026000C284B /* WidthSetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F06942231C2026000C284B /* WidthSetter.swift */; };
 		B2FF9369231A09D300C330E8 /* ReportCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FF9368231A09D300C330E8 /* ReportCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -37,6 +38,7 @@
 		B2915267231975460077C648 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		B2D4418B231B0E8300A4FC92 /* Formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatter.swift; sourceTree = "<group>"; };
 		B2E2ABE9231B88CB00C79375 /* AlignedCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlignedCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
+		B2F06942231C2026000C284B /* WidthSetter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidthSetter.swift; sourceTree = "<group>"; };
 		B2FF9368231A09D300C330E8 /* ReportCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -70,6 +72,7 @@
 		B213E782231770BC0064B224 /* Reporter */ = {
 			isa = PBXGroup;
 			children = (
+				B2F06941231C201A000C284B /* Utils */,
 				B231F0A5231B984500C867E4 /* Assets */,
 				B2915266231975360077C648 /* Extension */,
 				B27467CE2318772A0008008D /* Cells */,
@@ -126,6 +129,14 @@
 				B2D4418B231B0E8300A4FC92 /* Formatter.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		B2F06941231C201A000C284B /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				B2F06942231C2026000C284B /* WidthSetter.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -229,6 +240,7 @@
 				B213E784231770BC0064B224 /* AppDelegate.swift in Sources */,
 				B2915268231975460077C648 /* String.swift in Sources */,
 				B27467D0231877490008008D /* OptionsCell.swift in Sources */,
+				B2F06943231C2026000C284B /* WidthSetter.swift in Sources */,
 				B2E2ABEA231B88CC00C79375 /* AlignedCollectionViewFlowLayout.swift in Sources */,
 				B2FF9369231A09D300C330E8 /* ReportCell.swift in Sources */,
 			);

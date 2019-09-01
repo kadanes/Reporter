@@ -14,13 +14,16 @@ class OptionsCell: UICollectionViewCell {
     var label: UILabel!
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         label = UILabel(frame: .zero)
+        
         label.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(label)
-        NSLayoutConstraint.activate([
-            self.contentView.centerXAnchor.constraint(equalTo: label.centerXAnchor),
-            self.contentView.centerYAnchor.constraint(equalTo: label.centerYAnchor),
-            ])
+        label.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+        label.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        label.textAlignment = .left
     }
     
     func configureCell(option: String, selected: Bool) {
@@ -28,15 +31,10 @@ class OptionsCell: UICollectionViewCell {
         label.textColor = selected ?
             UIColor(red:0.29, green:0.29, blue:0.29, alpha:1.0):
             UIColor(red:0.64, green:0.64, blue:0.64, alpha:1.0)
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
     }
 }
 
