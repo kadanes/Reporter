@@ -32,7 +32,7 @@ class ReportCell: UICollectionViewCell {
         
         //X, Xs, 6, 6s, 7, 8
         case 375:
-            cellWidth = 340
+            cellWidth = 150
             
         //5, 5s, 5c, SE, 4, 4s, 2G, 3G, 3GS
         case 320:
@@ -52,8 +52,7 @@ class ReportCell: UICollectionViewCell {
         
         imageContainer.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(imageContainer)
-        
-        contentView.addSubview(thumbnailImageView)
+        imageContainer.addSubview(thumbnailImageView)
         imageContainer.addSubview(activityInd)
         contentView.addSubview(dateLabel)
         contentView.addSubview(titleLabel)
@@ -89,7 +88,7 @@ class ReportCell: UICollectionViewCell {
         titleLabel.widthAnchor.constraint(equalToConstant: cellWidth).isActive = true
         titleLabel.numberOfLines = 0
         titleLabel.lineBreakMode = .byWordWrapping
-        titleLabel.font = UIFont(name: "HelveticaNeue", size: 13)
+        titleLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 13)
         
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5).isActive = true

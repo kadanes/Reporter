@@ -18,6 +18,7 @@ import UIKit
  let filterOptionCellId = "FilterOptionsCell"
  var selectedTag = ""
  var sortedReports: [String: [Report]] = [:]
+ var fetchingThumbnails: [String] = []
  var loadedThumbnails: [String: UIImage] = [:]
  
  struct Report: Decodable {
@@ -42,7 +43,8 @@ import UIKit
         filterOptionsView.backgroundColor = .white
         self.view.addSubview(filterOptionsView)
         
-        let reportsViewLayout = TopAlignedCollectionViewFlowLayout()
+        let reportsViewLayout = AlignedCollectionViewFlowLayout()
+        reportsViewLayout.verticalAlignment = .top
         reportsViewLayout.estimatedItemSize = CGSize(width: 1.0, height: 1.0)
         reportsView = UICollectionView(frame: .zero, collectionViewLayout: reportsViewLayout)
         reportsView.translatesAutoresizingMaskIntoConstraints = false
@@ -115,6 +117,9 @@ import UIKit
     }
     
     func fetchImage(from report: Report) {
+        if let _ = fetchingThumbnails.firstIndex(of: report.title) { return }
+        fetchingThumbnails.append(report.title)
+        
         guard let url = URL(string: report.thumbnail) else { return }
         
         URLSession.shared.dataTask(with: url, completionHandler: {
@@ -136,14 +141,11 @@ import UIKit
             return tags.count
         }
         if collectionView == reportsView {
-           
             if selectedTag != "" {
                 return sortedReports[selectedTag]?.count ?? 0
             }
-            
             return reports?.reports.count ?? 0
         }
-        
         return 0
     }
     
@@ -163,6 +165,7 @@ import UIKit
                         reportCell.configureCell(thumbnail: thumbnail, date: currentReport.date, title: currentReport.title, description: currentReport.description)
                         return reportCell
                     } else {
+                        print("\n\n\nFETCHING\n\n\n")
                         fetchImage(from: currentReport)
                         reportCell.configureCell(thumbnail: nil, date: currentReport.date, title: currentReport.title, description: currentReport.description)
                         return reportCell
@@ -214,48 +217,8 @@ import UIKit
                         insetForSectionAt section: Int) -> UIEdgeInsets {
         
         if collectionView == reportsView {
-             return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+             return UIEdgeInsets(top: 0, left: 10, bottom: 10, right: 10)
         }
         return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-    }
-    
- }
-
- class TopAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
-    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        if let attrs = super.layoutAttributesForElements(in: rect) {
-            var baseline: CGFloat = -2
-            var sameLineElements = [UICollectionViewLayoutAttributes]()
-            for element in attrs {
-                if element.representedElementCategory == .cell {
-                    let frame = element.frame
-                    let centerY = frame.midY
-                    if abs(centerY - baseline) > 1 {
-                        baseline = centerY
-                        alignToTopForSameLineElements(sameLineElements: sameLineElements)
-                        sameLineElements.removeAll()
-                    }
-                    sameLineElements.append(element)
-                }
-            }
-            alignToTopForSameLineElements(sameLineElements: sameLineElements) // align one more time for the last line
-            return attrs
-        }
-        return nil
-    }
-    
-    private func alignToTopForSameLineElements(sameLineElements: [UICollectionViewLayoutAttributes]) {
-        if sameLineElements.count < 1 { return }
-        let sorted = sameLineElements.sorted { (obj1: UICollectionViewLayoutAttributes, obj2: UICollectionViewLayoutAttributes) -> Bool in
-            let height1 = obj1.frame.size.height
-            let height2 = obj2.frame.size.height
-            let delta = height1 - height2
-            return delta <= 0
-        }
-        if let tallest = sorted.last {
-            for obj in sameLineElements {
-                obj.frame = obj.frame.offsetBy(dx: 0, dy: tallest.frame.origin.y - obj.frame.origin.y)
-            }
-        }
     }
  }
