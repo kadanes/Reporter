@@ -204,7 +204,7 @@ import UIKit
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {
         if collectionView == reportsView {
-             return UIEdgeInsets(top: 0, left: getReportCellMargin(), bottom: 10, right: getReportCellMargin())
+             return UIEdgeInsets(top: 0, left: getReportCellMargin(), bottom: getReportCellMargin(), right: getReportCellMargin())
         }
         return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }

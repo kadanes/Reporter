@@ -22,8 +22,7 @@ class ReportCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        let screenWidth = UIScreen.main.bounds.width
-        var cellWidth = getReportCellWidth()
+        let cellWidth = getReportCellWidth()
         
         contentView.widthAnchor.constraint(equalToConstant: cellWidth).isActive = true
     
