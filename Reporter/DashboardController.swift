@@ -18,6 +18,7 @@ import UIKit
  let filterOptionCellId = "FilterOptionsCell"
  var selectedTag = ""
  var sortedReports: [String: [Report]] = [:]
+ var loadedThumbnails: [String: UIImage] = [:]
  
  struct Report: Decodable {
     let date: String
@@ -45,7 +46,7 @@ import UIKit
         reportsViewLayout.estimatedItemSize = CGSize(width: 1.0, height: 1.0)
         reportsView = UICollectionView(frame: .zero, collectionViewLayout: reportsViewLayout)
         reportsView.translatesAutoresizingMaskIntoConstraints = false
-        reportsView.backgroundColor = .blue
+        reportsView.backgroundColor = .white
         self.view.addSubview(reportsView)
 
         filterOptionsView.heightAnchor.constraint(equalToConstant: 60).isActive = true
@@ -54,8 +55,8 @@ import UIKit
         filterOptionsView.topAnchor.constraint(equalTo: view.topAnchor, constant: 28).isActive = true
         
         reportsView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 1).isActive = true
-        reportsView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-        reportsView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        reportsView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5).isActive = true
+        reportsView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5).isActive = true
         reportsView.topAnchor.constraint(equalTo: filterOptionsView.bottomAnchor, constant: 1).isActive = true
     }
     
@@ -96,7 +97,6 @@ import UIKit
         guard let filePath = Bundle.main.path(forResource: "data", ofType: "json") else {
             return
                 Reports(reports: [Report(date: Date().description, description: errorLog, tag: errorLog, thumbnail: errorLog, title: errorLog)])
-            
         }
         let fileUrl = URL(fileURLWithPath: filePath)
 
@@ -113,6 +113,20 @@ import UIKit
         return  
             Reports(reports: [Report(date: Date().description, description: errorLog, tag: errorLog, thumbnail: errorLog, title: errorLog)])
     }
+    
+    func fetchImage(from report: Report) {
+        guard let url = URL(string: report.thumbnail) else { return }
+        
+        URLSession.shared.dataTask(with: url, completionHandler: {
+            
+            data, response, error in
+            guard let data = data, error == nil else { return }
+            DispatchQueue.main.async() {
+                loadedThumbnails[report.title] = UIImage(data: data)
+                reportsView.reloadData()
+            }
+        }).resume()
+    }
  }
  
  extension DashboardController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -125,11 +139,9 @@ import UIKit
            
             if selectedTag != "" {
                 return sortedReports[selectedTag]?.count ?? 0
-//                return 1
             }
             
             return reports?.reports.count ?? 0
-//            return 1
         }
         
         return 0
@@ -145,18 +157,18 @@ import UIKit
             
             if let reportCell = collectionView.dequeueReusableCell(withReuseIdentifier: ReportCell.identifier, for: indexPath) as? ReportCell {
                 
-                if selectedTag != "" {
-                    let currentReport = sortedReports[selectedTag]?[indexPath.row]
-                    reportCell.configureCell(thumbnail: nil, date: currentReport?.date ?? undefinedLog, title: currentReport?.title ??  undefinedLog, description: currentReport?.description ?? undefinedLog)
-                    return reportCell
-                } else {
-                    let currentReport = reports?.reports[indexPath.row]
-                    reportCell.configureCell(thumbnail: nil, date: currentReport?.date ?? undefinedLog, title: currentReport?.title ?? undefinedLog, description: currentReport?.description ?? undefinedLog)
-                    return reportCell
+                if let currentReport = selectedTag == "" ? reports?.reports[indexPath.row] : sortedReports[selectedTag]?[indexPath.row] {
+                    
+                    if let thumbnail = loadedThumbnails[currentReport.title] {
+                        reportCell.configureCell(thumbnail: thumbnail, date: currentReport.date, title: currentReport.title, description: currentReport.description)
+                        return reportCell
+                    } else {
+                        fetchImage(from: currentReport)
+                        reportCell.configureCell(thumbnail: nil, date: currentReport.date, title: currentReport.title, description: currentReport.description)
+                        return reportCell
+                    }
                 }
-                
             }
-            
         }
         
         return UICollectionViewCell()
@@ -209,7 +221,6 @@ import UIKit
     
  }
 
- //2
  class TopAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         if let attrs = super.layoutAttributesForElements(in: rect) {

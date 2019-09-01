@@ -15,8 +15,8 @@ class ReportCell: UICollectionViewCell {
     var dateLabel: UILabel!
     var descriptionLabel: UILabel!
     var reportTag: UILabel!
-    var thumbnail: UIImageView!
-    var activityInd = UIActivityIndicatorView(style: .gray)
+    var thumbnailImageView: UIImageView!
+    var activityInd = UIActivityIndicatorView(style: .whiteLarge)
     var imageContainer: UIView!
     
     override init(frame: CGRect) {
@@ -45,27 +45,38 @@ class ReportCell: UICollectionViewCell {
         contentView.widthAnchor.constraint(equalToConstant: cellWidth).isActive = true
     
         imageContainer = UIView(frame: .zero)
+        thumbnailImageView = UIImageView(frame: .zero)
         dateLabel = UILabel(frame: .zero)
         titleLabel = UILabel(frame: .zero)
         descriptionLabel = UILabel(frame: .zero)
         
         imageContainer.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(imageContainer)
+        
+        contentView.addSubview(thumbnailImageView)
         imageContainer.addSubview(activityInd)
         contentView.addSubview(dateLabel)
         contentView.addSubview(titleLabel)
         contentView.addSubview(descriptionLabel)
         
-        activityInd.hidesWhenStopped = true
 
         imageContainer.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0 ).isActive = true
         imageContainer.widthAnchor.constraint(equalToConstant: cellWidth).isActive = true
         imageContainer.heightAnchor.constraint(equalToConstant: cellWidth).isActive = true
-        imageContainer.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-        imageContainer.layer.borderWidth = 1
-        
-        activityInd.centerXAnchor.constraint(equalTo: imageContainer.centerXAnchor, constant: 0).isActive = true
-        activityInd.centerYAnchor.constraint(equalTo: imageContainer.centerYAnchor, constant: 0).isActive = true
+        imageContainer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        imageContainer.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+
+        activityInd.translatesAutoresizingMaskIntoConstraints = false
+        activityInd.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+        activityInd.topAnchor.constraint(equalTo: contentView.topAnchor, constant: cellWidth/2).isActive = true
+        activityInd.hidesWhenStopped = true
+        activityInd.color = .black
+
+        thumbnailImageView.topAnchor.constraint(equalTo: imageContainer.topAnchor).isActive = true
+        thumbnailImageView.bottomAnchor.constraint(equalTo: imageContainer.bottomAnchor)
+        thumbnailImageView.widthAnchor.constraint(equalToConstant: cellWidth).isActive = true
+        thumbnailImageView.heightAnchor.constraint(equalToConstant: cellWidth).isActive = true
+        thumbnailImageView.frame = CGRect(x: 0, y: 0, width: cellWidth, height: cellWidth)
         
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         dateLabel.topAnchor.constraint(equalTo: imageContainer.bottomAnchor, constant: 5).isActive = true
@@ -98,13 +109,12 @@ class ReportCell: UICollectionViewCell {
         let dateString = Formatter.dmmyyyy.string(from: dateObj!)
         dateLabel.text = dateString
         descriptionLabel.text = description
-        
-        self.contentView.backgroundColor = .orange
-        
+        activityInd.startAnimating()
+
         if let image = thumbnail {
-            
-        } else {
-            activityInd.startAnimating()
+            activityInd.stopAnimating()
+            thumbnailImageView.image = image
+            thumbnailImageView.contentMode = .scaleAspectFill
         }
     }
     
